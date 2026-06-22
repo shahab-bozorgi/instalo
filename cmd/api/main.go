@@ -1,10 +1,19 @@
 package main
 
 import (
+	"log"
+
+	"github.com/shahab-bozorgi/instalo/config"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
@@ -12,5 +21,7 @@ func main() {
 			"message": "Server is running",
 		})
 	})
-	r.Run(":8080")
+	log.Printf("Server started on port %s", cfg.Port)
+
+	r.Run(":" + cfg.Port)
 }
